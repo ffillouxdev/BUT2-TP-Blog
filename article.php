@@ -11,7 +11,9 @@
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $title = $user['title_article'];
-    echo"<div class='article'>
+    echo"<div class='-article'>
             <h2>$title</h2>
         </div>";
+    
+    
 ?>

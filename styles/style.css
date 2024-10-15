@@ -118,7 +118,7 @@ p {
     margin-bottom: 10vh;
 }
 
-.article {
+.main-article {
     display: flex;
     flex-direction: column;
     justify-content: center;
