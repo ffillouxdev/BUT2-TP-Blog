@@ -28,4 +28,16 @@
     
         return $categories; // Returns the list of categories
     }
+
+    function getComment($pdo) {
+
+        $sql = 'SELECT * FROM comment';
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        
+        $comment = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $comment;
+    }
 ?>

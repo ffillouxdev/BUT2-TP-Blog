@@ -121,9 +121,54 @@ p {
 .main-article {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
 }
+
+.rubrique-article {
+    margin-top: 5vh;
+    text-align: left;
+    padding-left: 3vw;
+    padding-bottom: 2vh;
+}
+
+.container-article {
+    border: 3px solid black;
+    border-radius: 5px;
+    margin:  0 3vw 3vw 3vw;
+}
+
+.content-article {
+    display: flex;
+    gap: 4vw;
+    padding: 5vh;
+    text-align: left;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.content-article img {
+    height: 50vh;
+}
+
+.info-article {
+    padding-left: 3vw;
+    display: flex;
+    gap: 5vw;
+}
+
+.comment {
+    border: 3px solid black;
+    border-radius: 5px;
+    margin:  0 3vw 3vw 3vw;
+    text-align: left;
+    width: 40vw;
+}
+
+.content-comment {
+    font-size: 1.5em;
+    padding: 3vw;
+}
+
 
 footer {
     background-color: var(--primary-bg-color);
