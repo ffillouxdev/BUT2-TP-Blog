@@ -1,9 +1,24 @@
 * {
     margin: 0;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    background-color: red;
 }
 
-h2 {
-    background-color: red;
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+    margin-bottom: 10vh;
+    background-color: #5DC3E9;
+    color: white;
+    padding-left: 10vw;
+    padding-right: 10vw;
 }
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+}
+
