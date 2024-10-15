@@ -1,6 +1,6 @@
 <?php
 include("./components/header.php");
-
+include("./components/navbar.php");
 $connexion = getConnexion();
 ?>
 
