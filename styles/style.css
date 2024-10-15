@@ -14,11 +14,42 @@ header {
     padding-right: 10vw;
 }
 
+h2 {
+    font-size: 50px;
+}
+
 .auth-container {
+    margin-top: 20vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5vh;
+    margin-bottom: 10vh;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.errorPassword {
+    text-align: center;
+    font-size: 20px;
+    color: red;
+    margin-bottom: 10vh;
+}
+
+footer {
+    background-color: #5DC3E9;
+    height: 40vh;
+}
+
+footer img {
+    height: 30vh;
+}
+footer p {
+    text-align: center;
 }
 

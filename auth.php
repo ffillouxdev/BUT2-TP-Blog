@@ -14,7 +14,7 @@
 <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
         $_SESSION['email'] = $_POST['email'];
-        $_SESSION['mdp'] = $_POST['mdp'];
+        $_SESSION['mdp'] = password_hash($_POST['mdp']);
         
         // Vérifie si l'utilisateur existe déjà
         $sql = "SELECT id FROM user WHERE email = :email";
@@ -32,7 +32,19 @@
                     </form>
                 </div>";
         } else {
-            echo "<p>Un utilisateur avec cet email existe déjà.</p>";
+            $sql = "SELECT id FROM user WHERE email = :email and mdp = :mdp";
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindValue(':email', $_SESSION['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':mdp', password_hash($_POST['mdp']), PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1){
+                $user = $stmt->fetch(PDO::FETCH_ASSOC); // Récupère la ligne sous forme de tableau associatif
+                $_SESSION['pseudo'] = $user['pseudo']; // Stocke le pseudo dans la session
+                header('Location: index.php');
+                exit();
+            } else {
+                echo "<p class='errorPassword'>Le mot de passe rentré n'est pas le bon !</p>";
+            }
         }
     }
 
@@ -44,8 +56,10 @@
         $sql = "INSERT INTO user (email, mdp, pseudo, admin) VALUES (?, ?, ?, ?)";
         $stmt = $connexion->prepare($sql);
         $stmt->execute([$_SESSION['email'], $_SESSION['mdp'], $pseudo, 0]);
+        $_SESSION['pseudo'] = $pseudo;
 
-        echo "<p>Inscription réussie !</p>";
+        header('Location: index.php');
+        exit();
     }
 
     include("./components/footer.php");
