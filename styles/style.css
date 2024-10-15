@@ -79,6 +79,7 @@ p {
     }
 }
 
+
 .auth-container {
     margin-top: 20vh;
     display: flex;
@@ -95,11 +96,33 @@ p {
     gap: 1vh;
 }
 
+.formPseudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3vh;
+    margin-bottom: 10vh;
+}
+
+.formPseudo form {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
 .errorPassword {
     text-align: center;
     font-size: 20px;
     color: var(--error-color);
     margin-bottom: 10vh;
+}
+
+.main-article {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 footer {
