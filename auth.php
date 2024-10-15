@@ -27,7 +27,7 @@
         if ($stmt->rowCount() == 0) {
             // Afficher le formulaire pour demander le pseudo
             echo "<div class='formPseudo'>
-                    <h3>Insérer votre pseudo</h3>
+                    <h2>Insérer votre pseudo</h2>
                     <form method='POST'>
                         <input type='text' placeholder='Pseudo' name='pseudo' required>
                         <button type='submit'>Confirmer</button>
