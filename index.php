@@ -1,5 +1,6 @@
 <?php
 include("./components/header.php");
+include("./components/navbar.php");
 
 $connexion = getConnexion();
 ?>
@@ -9,9 +10,9 @@ $connexion = getConnexion();
         <div class="container-1">
             <h2>Articles</h2>
             <form action="" class="create-article-form">
-                <button type="button" class='button-action'>
+                <a class='button-action' href="myproject/BUT2-TP-Blog/create_article.php">
                     Créer un article
-                </button>
+                </a>
             </form>
             <div class="filter-checkbox">
                 <h3 for="filter"> Liste des filtre</h3>
