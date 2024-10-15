@@ -21,13 +21,26 @@
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $pseudo = $user['pseudo'];
 
+    $sql = "SELECT id_cat FROM article_category_link where id_article = 4";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute();
+    $category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $idCategory = $category['id_cat'];
+
+    $sql = "SELECT name_cat FROM category where id_cat = $idCategory";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute();
+    $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
+    $name = $nameCategory['name_cat'];
+
     $commentaires = getComment($connexion);
 
     echo"<div class='main-article'>
             <h2>$title</h2>";
 ?>
 
-    <p class='rubrique-article'>Article>Sport><?php echo "$title";?></p>
+    <p class='rubrique-article'><a href="./index.php">Article</a>><?php echo "$name>$title";?></p>
     <div class='container-article'>
         <div class="content-article">
             <p><?php echo $content ?></p>
@@ -69,5 +82,7 @@
             }
         } 
     ?>
-
 </div>
+<?php
+    include("components/footer.php");
+    ?>
