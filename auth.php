@@ -3,6 +3,7 @@
 
     $connexion = getConnexion();
 ?>
+<main>
     <div class="auth-container">
         <h2>Connexion</h2>
         <form method='POST'>
@@ -11,10 +12,11 @@
             <button type='submit'>Se connecter</button>
         </form>
     </div>
+</main>
 <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
         $_SESSION['email'] = $_POST['email'];
-        $_SESSION['mdp'] = password_hash($_POST['mdp']);
+        $_SESSION['mdp'] = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
         
         // Vérifie si l'utilisateur existe déjà
         $sql = "SELECT id FROM user WHERE email = :email";
@@ -35,7 +37,7 @@
             $sql = "SELECT id FROM user WHERE email = :email and mdp = :mdp";
             $stmt = $connexion->prepare($sql);
             $stmt->bindValue(':email', $_SESSION['email'], PDO::PARAM_STR);
-            $stmt->bindValue(':mdp', password_hash($_POST['mdp']), PDO::PARAM_STR);
+            $stmt->bindValue(':mdp', password_hash($_POST['mdp'], PASSWORD_DEFAULT), PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 1){
                 $user = $stmt->fetch(PDO::FETCH_ASSOC); // Récupère la ligne sous forme de tableau associatif
