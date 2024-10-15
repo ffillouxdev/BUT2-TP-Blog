@@ -3,6 +3,7 @@
 
     $connexion = getConnexion();
 ?>
+<main>
     <div class="auth-container">
         <h2>Connexion</h2>
         <form method='POST'>
@@ -11,6 +12,7 @@
             <button type='submit'>Se connecter</button>
         </form>
     </div>
+</main>
 <?php
     
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
@@ -34,8 +36,8 @@
                     </form>
                 </div>";
         } else {
-            if (password_verify($_SESSION['mdp'], $user['mdp'])){
-                
+
+            if (password_verify($_SESSION['mdp'], $user['mdp'])){        
                 $_SESSION['pseudo'] = $user['pseudo']; // Stocke le pseudo dans la session
                 header('Location: index.php');
                 exit();
