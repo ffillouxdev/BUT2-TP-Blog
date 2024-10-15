@@ -186,17 +186,28 @@ footer p {
     text-decoration: underline;
 }
 
-.button-action {
+.a-action {
     border: black 2px solid;
     background-color: transparent;
     color: black;
-    padding: 10px 70px;
+    padding: 10px 60px;
     border-radius: 5px;
+    text-decoration: none;
 }
 
-.button-action:hover {
+.a-action:hover {
     background-color: var(--primary-bg-color);
     color: var(--primary-font-color);
+}
+
+.a-category{
+    color: black;
+    text-decoration: none;
+}
+
+.a-category:hover {
+    text-decoration: underline;
+    color: var(--primary-bg-color);
 }
 
 .article {

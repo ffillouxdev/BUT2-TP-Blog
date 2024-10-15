@@ -2,5 +2,5 @@
         <form action="" method='POST'>
             <button>Se déconnecter</button>
         </form>
-        <h1>My Blog</h1>
+        <h1>BUT2-TP-Blog</h1>
 </header>

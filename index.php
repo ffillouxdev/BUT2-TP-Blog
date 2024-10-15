@@ -3,6 +3,8 @@ include("./components/header.php");
 include("./components/navbar.php");
 
 $connexion = getConnexion();
+$categories = getCategory($connexion);
+$articles = getArticles($connexion);
 ?>
 
 <main class="main-index">
@@ -10,7 +12,7 @@ $connexion = getConnexion();
         <div class="container-1">
             <h2>Articles</h2>
             <form action="" class="create-article-form">
-                <a class='button-action' href="myproject/BUT2-TP-Blog/create_article.php">
+                <a class='a-action' href="create_article">
                     Créer un article
                 </a>
             </form>
@@ -29,42 +31,18 @@ $connexion = getConnexion();
 
             </div>
             <ul class="category-list">
-                <h3 class='caterogy-title'>Catégories : </h3>
+                <h3 class='category-title'>Catégories : </h3>
                 <?php
-                //foreach li>a
-                $catergories = [
-                    'categorie1',
-                    'categorie2',
-                    'categorie3',
-                    'categorie4',
-                    'categorie5',
-                ];
-
-                foreach ($catergories as $i => $categorie) {
-                    echo "<li><a class='a-categority' href='#'>{$categorie}</a></li>";
+                foreach ($categories as $categorie) {
+                    echo "<li><a class='a-category' href='#'>{$categorie['name_cat']}</a></li>";
                 }
                 ?>
             </ul>
+
         </div>
         <div class="container-2">
             <?php
-            // Example articles array
-            $articles = [
-                [
-                    'title' => 'Article 1',
-                    'date' => '01/01/2021',
-                    'author' => 'John Doe',
-                    'image' => 'article1.jpg'
-                ],
-                [
-                    'title' => 'Article 2',
-                    'date' => '02/01/2021',
-                    'author' => 'Jane Doe',
-                    'image' => 'article2.jpg'
-                ],
-            ];
-
-            foreach ($articles as $i => $article) {
+            foreach ($articles as $article) {
                 echo "
                 <div class='article article-$i'>
                     <div class='image-article'>
