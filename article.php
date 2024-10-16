@@ -6,31 +6,23 @@
         header("Location: auth.php");
         exit();
     }*/
-    $sql = "SELECT * FROM article WHERE id_article = 4";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
+    $stmt = getArticle(4);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $title = $user['title_article'];
     $content = $user['content_article'];
     $image = $user['picture_article'];
     $date = $user['date_article'];
 
-    $sql = "SELECT U.pseudo FROM user U join article A on U.id = A.id where id_article = 4";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
+    $stmt = getPseudoWithArticle(4);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $pseudo = $user['pseudo'];
 
-    $sql = "SELECT id_cat FROM article_category_link where id_article = 4";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
+    $stmt = getCategoryWithArticle(4);
     $category = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $idCategory = $category['id_cat'];
 
-    $sql = "SELECT name_cat FROM category where id_cat = $idCategory";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
+    $stmt = getCategoryWithIdCategory($idCategory);
     $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
     $name = $nameCategory['name_cat'];
 
@@ -67,9 +59,7 @@
                     <div class='info-article'>
                         <?php
                             
-                            $sql = "SELECT U.pseudo FROM user U join comment C on U.id = C.id where id_comment = $auteurCommentaire";
-                            $stmt = $connexion->prepare($sql);
-                            $stmt->execute();
+                            $stmt = getPseudoWithIdComment($auteurCommentaire);
                             $user = $stmt->fetch(PDO::FETCH_ASSOC);
                             $pseudoCommentaire = $user['pseudo'];
                             

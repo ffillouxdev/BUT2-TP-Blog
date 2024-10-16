@@ -2,7 +2,7 @@
     function getConnexion() {
         //récupération des données
         try {
-            $connexion = new PDO('mysql:host=localhost;dbname=blog_s2', 'root', 'azerty');
+            $connexion = new PDO('mysql:host=localhost;dbname=blog_s2', 'root', '');
 
             $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $connexion;
@@ -43,6 +43,46 @@
         $sql = "INSERT INTO user (email, mdp, pseudo, admin) VALUES (?, ?, ?, ?)";
         $stmt = $connexion->prepare($sql);
         $stmt->execute([$email, $mdp, $pseudo, 0]);
+    }
+
+    function getArticle($id_article){
+        $connexion = getConnexion();
+        $sql = "SELECT * FROM article WHERE id_article = $id_article";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getPseudoWithArticle($id_article){
+        $connexion = getConnexion();
+        $sql = "SELECT U.pseudo FROM user U join article A on U.id = A.id where id_article = 4";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getCategoryWithArticle($id_article){
+        $connexion = getConnexion();
+        $sql = "SELECT id_cat FROM article_category_link where id_article = 4";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getCategoryWithIdCategory($idCategory){
+        $connexion = getConnexion();
+        $sql = "SELECT name_cat FROM category where id_cat = $idCategory";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getPseudoWithIdComment($idComment){
+        $connexion = getConnexion();
+        $sql = "SELECT U.pseudo FROM user U join comment C on U.id = C.id where id_comment = $idComment";
+                            $stmt = $connexion->prepare($sql);
+                            $stmt->execute();
+        return $stmt;
     }
 
     function getCategory($pdo) {
