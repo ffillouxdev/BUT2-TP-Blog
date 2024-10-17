@@ -1,4 +1,7 @@
-<?php require_once('./components/header.php'); ?>
+<?php
+ require_once('./components/header.php');
+ include("./components/navbar.php"); 
+ ?>
 
 <h2>Créer un article</h2>
 <p>Remplissez les champs ci-dessous pour créer et publier votre article !</p>
