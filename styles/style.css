@@ -47,7 +47,6 @@ header {
 }
 
 main{
-    /*min-height: 100vh;*/
     height: auto;
 }
 
@@ -92,21 +91,6 @@ p {
 }
 
 .auth-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-}
-
-.formPseudo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 3vh;
-    margin-bottom: 10vh;
-}
-
-.formPseudo form {
     display: flex;
     flex-direction: column;
     gap: 1vh;

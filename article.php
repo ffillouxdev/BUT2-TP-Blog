@@ -27,10 +27,10 @@
     $name = $nameCategory['name_cat'];
 
     $commentaires = getComment($connexion);
-
-    echo"<div class='main-article'>
-            <h2>$title</h2>";
 ?>
+<main>
+    <div class='main-article'>
+        <h2><?php echo $title ;?></h2>
 
     <p class='rubrique-article'><a href="./index.php">Article</a>><?php echo "$name>$title";?></p>
     <div class='container-article'>
@@ -72,7 +72,8 @@
             }
         } 
     ?>
-</div>
+    </div>
+</main>
 <?php
     include("components/footer.php");
     ?>
