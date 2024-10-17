@@ -3,12 +3,15 @@
 
     $connexion = getConnexion();
 ?>
-<main>
+<main class="main-auth">
     <div class="auth-container">
         <h2>Connexion</h2>
         <form method='POST'>
             <input type="email" placeholder='Email' name='email'>
-            <input type="text" placeholder='Mot de passe' name ='mdp'>
+            <div class="show-hide-password">
+                <input type="password" placeholder='Mot de passe' name ='mdp'>
+                <span>👁️</span>
+            </div>
             <button type='submit'>Se connecter</button>
         </form>
     </div>

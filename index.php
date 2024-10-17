@@ -10,30 +10,31 @@ $articles = getArticles($connexion);
     <div class="index-flex-container">
         <div class="container-1">
             <h2>Articles</h2>
-            <form action="" class="create-article-form">
-                <a class='a-action' href="create_article">
-                    Créer un article
-                </a>
-            </form>
-            <div class="filter-checkbox">
-                <h3 for="filter"> Liste des filtre</h3>
-                <div>
-                    <ul>
-                        <li>
-                            <div class="li-flex">
-                                <label>username</label>
-                                <input type="checkbox" id="filter" name="filter">
-                            </div>
-                        </li>
-                    </ul>
+            <div class="article-content">
+                <form action="" class="create-article-form">
+                    <a class='a-action' href="create_article">
+                        Créer un article
+                    </a>
+                </form>
+                <div class="filter-checkbox">
+                    <h3 for="filter"> Liste des filtre</h3>
+                    <div>
+                        <ul>
+                            <li>
+                                <div class="li-flex">
+                                    <label>username</label>
+                                    <input type="checkbox" id="filter" name="filter">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
             </div>
             <ul class="category-list">
                 <h3 class='category-title'>Catégories : </h3>
                 <?php
                 foreach ($categories as $categorie) {
-                    echo "<li><a class='a-category' href='#'>{$categorie['name_cat']}</a></li>";
+                    echo "<li><a class='a-category' href={$categorie['name_cat']}>{$categorie['name_cat']}</a></li>";
                 }
                 ?>
             </ul>
