@@ -98,17 +98,14 @@
     }
 
     function getCategory($pdo) {
-        // Prepare the SQL query
         $sql = 'SELECT id_cat, name_cat FROM CATEGORY';
     
-        // Prepare and execute the query
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     
-        // Fetch all results as an associative array
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-        return $categories; // Returns the list of categories
+        return $categories;
     }
 
     function getComment($pdo) {
@@ -121,6 +118,17 @@
         $comment = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
         return $comment;
+    }
+
+    function getArticles($pdo) {
+        $sql = 'SELECT id_article, title_article, content_article, picture_article,	id, date_article FROM ARTICLE';	
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    
+        $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $articles;
     }
 
 ?>

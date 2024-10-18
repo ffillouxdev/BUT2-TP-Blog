@@ -6,19 +6,18 @@
         $_SESSION['sansPseudo'] = false;
     }
 ?>
-<main>
-    <?php if ($_SESSION['sansPseudo'] === false) { ?>
-        <div class="auth-container">
-            <h2>Connexion</h2>
-            <form method='POST'>
-                <input type="email" placeholder='Email' name='email' required>
-                <input type="password" placeholder='Mot de passe' name ='mdp' required>
-                <button type='submit'>Se connecter</button>
-            </form>
-        </div>
-    <?php } ?>
-
-    <?php
+<main class='main-auth'>
+    <div class="auth-container">
+        <h2>Connexion</h2>
+        <form method='POST'>
+            <input type="email" placeholder='Email' name='email'>
+            <input type="text" placeholder='Mot de passe' name ='mdp'>
+            <button type='submit'>Se connecter</button>
+        </form>
+    </div>
+</main>
+<?php
+    
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['mdp'] = $_POST['mdp'];
