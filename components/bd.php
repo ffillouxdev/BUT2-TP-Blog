@@ -80,9 +80,21 @@
     function getPseudoWithIdComment($idComment){
         $connexion = getConnexion();
         $sql = "SELECT U.pseudo FROM user U join comment C on U.id = C.id where id_comment = $idComment";
-                            $stmt = $connexion->prepare($sql);
-                            $stmt->execute();
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
         return $stmt;
+    }
+
+    function insertComment($pseudo, $comment, $id_article){
+        $connexion = getConnexion();
+        $sql = "SELECT U.id FROM user U WHERE U.pseudo = :pseudo";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':pseudo' => $pseudo]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $id = $user['id'];
+        $sql = "INSERT into comment (content_comment, id_article, id, date_comment) values (?, ?, ?, ?)";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([$comment,$id_article,$id, date("Y-m-d")]);
     }
 
     function getCategory($pdo) {
@@ -110,4 +122,5 @@
     
         return $comment;
     }
+
 ?>

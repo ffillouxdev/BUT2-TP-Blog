@@ -144,7 +144,7 @@ p {
 .comment {
     border: 3px solid black;
     border-radius: 5px;
-    margin:  0 3vw 3vw 3vw;
+    margin:  0 3vw 10vh 3vw;
     text-align: left;
 }
 
@@ -152,6 +152,24 @@ p {
     font-size: 1.5em;
     padding: 3vw;
 }
+
+.post-comment {
+    margin-bottom: 10vh;
+}
+
+.post-comment > p {
+    margin-bottom: 5vh;
+}
+
+.post-comment textarea {
+    width: 40vw;
+    height: 20vh;
+}
+
+.post-comment button {
+    width: 40vw;
+}
+
 
 
 footer {

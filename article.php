@@ -15,7 +15,7 @@
 
     $stmt = getPseudoWithArticle(4);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $pseudo = $user['pseudo'];
+    $pseudoWriter = $user['pseudo'];
 
     $stmt = getCategoryWithArticle(4);
     $category = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,7 +39,7 @@
             <img src="http://localhost/but2-tp-blog/assets/<?php echo $image; ?>" alt="Article Image">
         </div>
         <div class='info-article'>
-            <p><b>Auteur : </b><?php echo $pseudo?></p>
+            <p><b>Auteur : </b><?php echo $pseudoWriter?></p>
             <p><b>Publié le :</b><?php echo $date?></p>
         </div>
     </div>
@@ -49,7 +49,7 @@
         $rowCount = count($commentaires);
         if ($rowCount > 0){
             echo "<p class='rubrique-article'>Toutes les réponses :</p>";
-            for ($i = 0; $i < 10 && $i < $rowCount; $i++) {
+            for ($i = 0; $i < 2 && $i < $rowCount; $i++) {
                 $contenuCommentaire = $commentaires[$i]['content_comment'];
                 $auteurCommentaire = $commentaires[$i]['id_comment'];
                 $dateCommentaire = $commentaires[$i]['date_comment']; 
@@ -67,13 +67,28 @@
                         <p><b>Auteur : </b><?php echo $pseudoCommentaire?></p>
                         <p><b>Publié le :</b><?php echo $dateCommentaire?></p>
                     </div>
+                    
                 </div>
         <?php
             }
         } 
     ?>
+        <div class='post-comment'>
+            <h2>Créer une réponse</h2>
+            <p>Remplissez les champs ci-dessous pour créer et publier votre réponse!</p>
+            <form action="" method='POST'>
+                <textarea name="comment" placeholder='Votre réponse'></textarea>
+                <p>0 / 400 caractères</p>
+                <button>Poster votre réponse</button>
+            </form>
+        </div>
+        <?php 
+            if(!empty($_POST['comment'])){
+                insertComment("test", $_POST['comment'], 4);
+            }
+        ?>
     </div>
 </main>
 <?php
     include("components/footer.php");
-    ?>
+?>
