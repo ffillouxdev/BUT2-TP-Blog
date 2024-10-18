@@ -27,7 +27,7 @@
     }
 
     function getArticles($pdo) {
-        $sql = 'SELECT id_article, title_article, content_article, picture_article,	id FROM ARTICLE';	
+        $sql = 'SELECT id_article, title_article, content_article, picture_article,	id, date_article FROM ARTICLE';	
     
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

@@ -17,12 +17,12 @@ $articles = getArticles($connexion);
                     </a>
                 </form>
                 <div class="filter-checkbox">
-                    <h3 for="filter"> Liste des filtre</h3>
+                    <h3>Liste des filtres</h3>
                     <div>
                         <ul>
                             <li>
                                 <div class="li-flex">
-                                    <label>username</label>
+                                    <label for="filter">Username</label>
                                     <input type="checkbox" id="filter" name="filter">
                                 </div>
                             </li>
@@ -30,30 +30,32 @@ $articles = getArticles($connexion);
                     </div>
                 </div>
             </div>
+
+            <h3 class='category-title'>Catégories :</h3>
             <ul class="category-list">
-                <h3 class='category-title'>Catégories : </h3>
                 <?php
                 foreach ($categories as $categorie) {
-                    echo "<li><a class='a-category' href={$categorie['name_cat']}>{$categorie['name_cat']}</a></li>";
+                    echo "<li><a class='a-category' href='category.php?name={$categorie['name_cat']}'>{$categorie['name_cat']}</a></li>"; // Correction de l'URL du lien
                 }
                 ?>
             </ul>
 
         </div>
+
         <div class="container-2">
             <?php
             foreach ($articles as $article) {
                 echo "
-                <div class='article article-$i'>
+                <div class='article article-{$article['id_article']}'>
                     <div class='image-article'>
-                        <img src='./images/{$article['image']}' alt='image-article'>
+                        <img src='./images/{$article['picture_article']}' alt='image-article'>
                     </div>
                     <div class='content-article'>
-                        <h3>{$article['title']}</h3>
+                        <h3>{$article['title_article']}</h3>
                         <div class='content-article-bottom'>
-                            <p>Posté le : {$article['date']}</p>
+                            <p>Posté le : {$article['date_article']}</p>
                             <div class='content-article-author'>
-                                <p><strong>auteur : </strong> {$article['author']}</p>
+                                <p><strong>Auteur : </strong> {$article['id']}</p>
                                 <a class='a-redirection' href='#'>En savoir +</a>
                             </div>
                         </div>
@@ -66,6 +68,7 @@ $articles = getArticles($connexion);
                 Voir plus
             </button>
         </div>
+    </div>
 </main>
 
 <?php
