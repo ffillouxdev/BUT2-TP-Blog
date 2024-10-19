@@ -7,15 +7,19 @@
     }
 ?>
 <main class='main-auth'>
+    <?php if ($_SESSION['sansPseudo'] === false) { ?>
     <div class="auth-container">
         <h2>Connexion</h2>
         <form method='POST'>
             <input type="email" placeholder='Email' name='email'>
-            <input type="text" placeholder='Mot de passe' name ='mdp'>
+            <div class="show-hide-password">
+                <input type="password" placeholder='Mot de passe' name ='mdp'>
+                <span>👁️</span>
+            </div>
             <button type='submit'>Se connecter</button>
         </form>
     </div>
-</main>
+    <?php } ?>
 <?php
     
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
