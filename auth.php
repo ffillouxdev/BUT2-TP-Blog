@@ -58,7 +58,9 @@
                 <button type='submit'>Confirmer</button>
             </form>
         </div>
+        
     <?php
+        unset($_SESSION['sansPseudo']);
     }
 
     // Si le formulaire pour le pseudo a été soumis

@@ -2,12 +2,14 @@ function updateChar(){
     const char = document.getElementById('caractere')
     const input = document.querySelector('.post-comment textarea')
 
-    input.addEventListener("input", () => {
-        if (input.value.length > 400) {
-            input.value = input.value.substring(0, 400); // Limiter à 400 caractères
-        }
-        char.innerHTML = input.value.length + ' / 400' 
-    })
+    if (input) {
+        input.addEventListener("input", () => {
+            if (input.value.length > 400) {
+                input.value = input.value.substring(0, 400); // Limiter à 400 caractères
+            }
+            char.innerHTML = input.value.length + ' / 400' 
+        })
+    }
 }
 
 updateChar();
@@ -37,9 +39,7 @@ function updateComment(){
                     voirPlusBtn.style.display = 'none';
                 }
             });
-        } else {
-            console.error("Bouton 'Voir plus' non trouvé.");
-        }
+        } 
     });
 }
 
