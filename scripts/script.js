@@ -44,3 +44,17 @@ function updateComment(){
 }
 
 updateComment()
+
+function showPassword() {
+    check = document.getElementById('show-password')
+    input = document.querySelector('.show-hide-password input')
+    check.addEventListener("mousedown", () => {
+        input.type = "text";
+    });
+
+    check.addEventListener("mouseup", () => {
+        input.type = "password";
+    });
+}
+
+showPassword();

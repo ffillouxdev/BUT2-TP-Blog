@@ -14,7 +14,7 @@
             <input type="email" placeholder='Email' name='email'>
             <div class="show-hide-password">
                 <input type="password" placeholder='Mot de passe' name ='mdp'>
-                <span>👁️</span>
+                <span id='show-password'>👁️</span>
             </div>
             <button type='submit'>Se connecter</button>
         </form>
