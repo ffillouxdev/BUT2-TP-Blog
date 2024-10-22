@@ -63,7 +63,7 @@
 
     function getCategoryWithArticle($id_article){
         $connexion = getConnexion();
-        $sql = "SELECT id_cat FROM article_category_link where id_article = 4";
+        $sql = "SELECT id_cat FROM article_category_link where id_article = $id_article";
         $stmt = $connexion->prepare($sql);
         $stmt->execute();
         return $stmt;
@@ -131,4 +131,34 @@
         return $articles;
     }
 
+    
+    function slugify($text) {
+        $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
+        $text = preg_replace('/&([a-zA-Z])(uml|acute|grave|circ|tilde);/', '$1', $text);
+        $text = preg_replace('/[\s-]+/', '-', trim($text));
+        return strtolower($text);
+    }
+
+    function deSlugify($text) {
+        $text = preg_replace('/-/', ' ', $text);
+        return $text;
+    }
+
+    function getArticlesByCategory($category_slug){
+        $connexion = getConnexion();
+        $sql = "SELECT * FROM article A join article_category_link ACL on A.id_article = ACL.id_article join category C on ACL.id_cat = C.id_cat where C.name_cat like :category_slug";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':category_slug' => $category_slug]);
+        return $stmt;
+    }
+    
+    function getArticleBySlug($article_slug){
+        $connexion = getConnexion();
+        $article_title = deSlugify($article_slug);
+        $sql = "SELECT * FROM article where title_article like :article_title";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':article_title' => $article_title]);
+        return $stmt;
+    }
+    
 ?>
