@@ -240,6 +240,10 @@ p {
     text-align: left;
 }
 
+.hidden {
+    display: none;
+}
+
 .content-comment {
     font-size: 1.5em;
     padding: 3vw;
@@ -260,8 +264,23 @@ p {
 
 .post-comment button {
     width: 40vw;
+    border: 2px solid black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
+#voir-plus {
+    width: 20vw;
+    border: 2px solid black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 10vh;
+    margin-left: 39vw;
+}
 
 
 footer {

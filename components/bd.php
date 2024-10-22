@@ -63,7 +63,7 @@
 
     function getCategoryWithArticle($id_article){
         $connexion = getConnexion();
-        $sql = "SELECT id_cat FROM article_category_link where id_article = 4";
+        $sql = "SELECT id_cat FROM article_category_link where id_article = $id_article";
         $stmt = $connexion->prepare($sql);
         $stmt->execute();
         return $stmt;
@@ -95,6 +95,15 @@
         $sql = "INSERT into comment (content_comment, id_article, id, date_comment) values (?, ?, ?, ?)";
         $stmt = $connexion->prepare($sql);
         $stmt->execute([$comment,$id_article,$id, date("Y-m-d")]);
+    }
+
+    function getCommentByArticle($id_article) {
+        $connexion = getConnexion();
+        $sql = "SELECT * FROM comment WHERE id_article = $id_article";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $user;
     }
 
     function getCategory($pdo) {

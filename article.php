@@ -26,7 +26,8 @@
     $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
     $name = $nameCategory['name_cat'];
 
-    $commentaires = getComment($connexion);
+    $commentaires = getCommentByArticle(4);
+    $initialCount = 2;
 ?>
 <main>
     <div class='main-article'>
@@ -36,7 +37,7 @@
     <div class='container-article'>
         <div class="content-article">
             <p><?php echo $content ?></p>
-            <img src="http://localhost/but2-tp-blog/assets/<?php echo $image; ?>" alt="Article Image">
+            <img src="./assets/article/<?php echo $image; ?>" alt="Article Image">
         </div>
         <div class='info-article'>
             <p><b>Auteur : </b><?php echo $pseudoWriter?></p>
@@ -49,42 +50,49 @@
         $rowCount = count($commentaires);
         if ($rowCount > 0){
             echo "<p class='rubrique-article'>Toutes les réponses :</p>";
-            for ($i = 0; $i < 2 && $i < $rowCount; $i++) {
+            for ($i = 0; $i < $rowCount; $i++) {
                 $contenuCommentaire = $commentaires[$i]['content_comment'];
                 $auteurCommentaire = $commentaires[$i]['id_comment'];
                 $dateCommentaire = $commentaires[$i]['date_comment']; 
+                
+                // Ajout d'une classe et d'un style pour les commentaires cachés
+                $isHidden = $i >= $initialCount ? 'hidden' : '';
                 ?>
-                <div class='comment'>
+                <div class='comment <?php echo $isHidden; ?>'>
                     <p class='content-comment'><?php echo $contenuCommentaire;?></p>
                     <div class='info-article'>
                         <?php
-                            
                             $stmt = getPseudoWithIdComment($auteurCommentaire);
                             $user = $stmt->fetch(PDO::FETCH_ASSOC);
                             $pseudoCommentaire = $user['pseudo'];
-                            
                         ?>
                         <p><b>Auteur : </b><?php echo $pseudoCommentaire?></p>
                         <p><b>Publié le :</b><?php echo $dateCommentaire?></p>
                     </div>
-                    
                 </div>
-        <?php
+                <?php
             }
-        } 
+            // Bouton "Voir plus"
+            if ($rowCount > $initialCount) {
+                echo "<button id='voir-plus'>Voir plus</button>";
+            }
+        }
     ?>
+        
         <div class='post-comment'>
             <h2>Créer une réponse</h2>
             <p>Remplissez les champs ci-dessous pour créer et publier votre réponse!</p>
             <form action="" method='POST'>
-                <textarea name="comment" placeholder='Votre réponse'></textarea>
-                <p>0 / 400 caractères</p>
+                <textarea name="comment" placeholder='Votre réponse' maxlength="400"></textarea>
+                <p id='caractere'>0 / 400 caractères</p>
                 <button>Poster votre réponse</button>
             </form>
         </div>
         <?php 
             if(!empty($_POST['comment'])){
                 insertComment("test", $_POST['comment'], 4);
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
             }
         ?>
     </div>
