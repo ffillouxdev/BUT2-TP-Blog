@@ -66,10 +66,10 @@ button.disconnect-btn {
     border-radius: 10px;
 }
 
-button.disconnect-btn:hover {
+button.disconnect-btn:hover { 
     transform: scale(0.95);
     transition: transform 0.1s ease-in-out;
-}
+} 
 
 main {
     /* min-height: 100vh; */
@@ -188,22 +188,7 @@ p {
     font-weight: bold;
 }
 
-.formPseudo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 3vh;
-    margin-bottom: 10vh;
-}
-
-.formPseudo form {
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-}
-
-.errorPassword {
+.error {
     text-align: center;
     font-size: 20px;
     color: var(--error-color);
@@ -213,9 +198,71 @@ p {
 .main-article {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
 }
+
+.rubrique-article {
+    margin-top: 5vh;
+    text-align: left;
+    padding-left: 3vw;
+    padding-bottom: 2vh;
+}
+
+.container-article {
+    border: 3px solid black;
+    border-radius: 5px;
+    margin:  0 3vw 3vw 3vw;
+}
+
+.content-article {
+    display: flex;
+    gap: 4vw;
+    padding: 5vh;
+    text-align: left;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.content-article img {
+    height: 50vh;
+}
+
+.info-article {
+    padding-left: 3vw;
+    display: flex;
+    gap: 5vw;
+}
+
+.comment {
+    border: 3px solid black;
+    border-radius: 5px;
+    margin:  0 3vw 10vh 3vw;
+    text-align: left;
+}
+
+.content-comment {
+    font-size: 1.5em;
+    padding: 3vw;
+}
+
+.post-comment {
+    margin-bottom: 10vh;
+}
+
+.post-comment > p {
+    margin-bottom: 5vh;
+}
+
+.post-comment textarea {
+    width: 40vw;
+    height: 20vh;
+}
+
+.post-comment button {
+    width: 40vw;
+}
+
+
 
 footer {
     height: 20vh;

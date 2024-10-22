@@ -2,8 +2,12 @@
     include("./components/header.php");
 
     $connexion = getConnexion();
+    if (!isset($_SESSION['sansPseudo'])) {
+        $_SESSION['sansPseudo'] = false;
+    }
 ?>
-<main class="main-auth">
+<main class='main-auth'>
+    <?php if ($_SESSION['sansPseudo'] === false) { ?>
     <div class="auth-container">
         <h2>Connexion</h2>
         <form method='POST'>
@@ -15,41 +19,46 @@
             <button type='submit'>Se connecter</button>
         </form>
     </div>
-</main>
+    <?php } ?>
 <?php
     
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['mdp'] = $_POST['mdp'];
 
-        // Vérifie si l'utilisateur existe déjà
-        $sql = "SELECT id, mdp FROM user WHERE email = :email";
-        $stmt = $connexion->prepare($sql);
-        $stmt->bindValue(':email', $_SESSION['email'], PDO::PARAM_STR);
-        $stmt->execute();
+        $stmt = getConnected($_SESSION['email']);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($stmt->rowCount() == 0) {
-            // Afficher le formulaire pour demander le pseudo
-            echo "<div class='formPseudo'>
-                    <h2>Insérer votre pseudo</h2>
-                    <form method='POST'>
-                        <input type='text' placeholder='Pseudo' name='pseudo' required>
-                        <button type='submit'>Confirmer</button>
-                    </form>
-                </div>";
-        } else {
-
-            if (password_verify($_SESSION['mdp'], $user['mdp'])){        
-                $_SESSION['pseudo'] = $user['pseudo']; // Stocke le pseudo dans la session
-                header('Location: index.php');
+        if (filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL)){
+            if ($stmt->rowCount() == 0) { 
+                $_SESSION['sansPseudo'] = true;
+                header('Location: ' . $_SERVER['PHP_SELF']); // Rediriger pour actualiser la page et afficher le formulaire de pseudo
                 exit();
             } else {
-                echo "<p class='errorPassword'>Le mot de passe rentré n'est pas le bon !</p>";
+                if (password_verify($_SESSION['mdp'], $user['mdp'])){        
+                    $_SESSION['pseudo'] = $user['pseudo'];
+                    header('Location: index.php');
+                    exit();
+                } else { ?>
+                    <p class='error'>Le mot de passe rentré n'est pas le bon !</p>
+                <?php
+                }
             }
+        } else { ?>
+            <p class='error'>Vous n'avez pas rentré l'email dans le format désiré !</p>
+        <?php    
         }
-
         
+    }
+
+    if ($_SESSION['sansPseudo'] === true) { ?>
+        <div class='auth-container'>
+            <h2>Insérer votre pseudo</h2>
+            <form method='POST'>
+                <input type='text' placeholder='Pseudo' name='pseudo' required>
+                <button type='submit'>Confirmer</button>
+            </form>
+        </div>
+    <?php
     }
 
     // Si le formulaire pour le pseudo a été soumis
@@ -60,15 +69,16 @@
         // Hachage du mot de passe avant l'insertion
         $mdp_hache = password_hash($mdp, PASSWORD_DEFAULT);
         
-        // Insère le nouvel utilisateur dans la base de données
-        $sql = "INSERT INTO user (email, mdp, pseudo, admin) VALUES (?, ?, ?, ?)";
-        $stmt = $connexion->prepare($sql);
-        $stmt->execute([$_SESSION['email'], $mdp_hache, $pseudo, 0]);
-        $_SESSION['pseudo'] = $pseudo;
-        $_SESSION['mdp'] = null;
-        header('Location: index.php');
-        exit();
+        if (verifyPseudo($pseudo)){
+            insertUser($_SESSION['email'], $mdp_hache, $pseudo);
+            $_SESSION['pseudo'] = $pseudo;
+            unset($_SESSION['sansPseudo'],$_SESSION['mdp'], $_SESSION['email']);
+            header('Location: index.php');
+            exit();
+        }
     }
-
+?>
+</main>
+<?php
     include("./components/footer.php");
 ?>

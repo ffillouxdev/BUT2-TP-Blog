@@ -35,7 +35,7 @@ $articles = getArticles($connexion);
             <ul class="category-list">
                 <?php
                 foreach ($categories as $categorie) {
-                    echo "<li><a class='a-category' href='category.php?name={$categorie['name_cat']}'>{$categorie['name_cat']}</a></li>"; // Correction de l'URL du lien
+                    echo "<li><a class='a-category' href='article/{$categorie['name_cat']}'>{$categorie['name_cat']}</a></li>";
                 }
                 ?>
             </ul>
@@ -44,7 +44,16 @@ $articles = getArticles($connexion);
 
         <div class="container-2">
             <?php
+
             foreach ($articles as $article) {
+                // Récupére la catégorie de l'article
+                $category_of_article_stmt = getCategoryWithArticle($article['id_article']);
+                $category_of_article = $category_of_article_stmt->fetch(PDO::FETCH_ASSOC)['id_cat'];
+                $category_name = getCategoryWithIdCategory($category_of_article)->fetch(PDO::FETCH_ASSOC)['name_cat'];
+
+                $category_slug = slugify($category_name);
+                $article_slug = slugify($article['title_article']);
+
                 echo "
                 <div class='article article-{$article['id_article']}'>
                     <div class='image-article'>
@@ -56,7 +65,7 @@ $articles = getArticles($connexion);
                             <p>Posté le : {$article['date_article']}</p>
                             <div class='content-article-author'>
                                 <p><strong>Auteur : </strong> {$article['id']}</p>
-                                <a class='a-redirection' href='#'>En savoir +</a>
+                                <a class='a-redirection' href='article/$category_slug/{$article_slug}'>En savoir +</a>
                             </div>
                         </div>
                     </div>
