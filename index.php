@@ -2,79 +2,60 @@
 include("./components/header.php");
 include("./components/navbar.php");
 $connexion = getConnexion();
+$categories = getCategory($connexion);
+$articles = getArticles($connexion);
 ?>
 
 <main class="main-index">
     <div class="index-flex-container">
         <div class="container-1">
             <h2>Articles</h2>
-            <form action="" class="create-article-form">
-                <button type="button" class='button-action'>
-                    Créer un article
-                </button>
-            </form>
-            <div class="filter-checkbox">
-                <h3 for="filter"> Liste des filtre</h3>
-                <div>
-                    <ul>
-                        <li>
-                            <div class="li-flex">
-                                <label>username</label>
-                                <input type="checkbox" id="filter" name="filter">
-                            </div>
-                        </li>
-                    </ul>
+            <div class="article-content">
+                <form action="" class="create-article-form">
+                    <a class='a-action' href="create_article">
+                        Créer un article
+                    </a>
+                </form>
+                <div class="filter-checkbox">
+                    <h3>Liste des filtres</h3>
+                    <div>
+                        <ul>
+                            <li>
+                                <div class="li-flex">
+                                    <label for="filter">Username</label>
+                                    <input type="checkbox" id="filter" name="filter">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
             </div>
-            <ul class="category-list">
-                <h3 class='caterogy-title'>Catégories : </h3>
-                <?php
-                //foreach li>a
-                $catergories = [
-                    'categorie1',
-                    'categorie2',
-                    'categorie3',
-                    'categorie4',
-                    'categorie5',
-                ];
 
-                foreach ($catergories as $i => $categorie) {
-                    echo "<li><a class='a-categority' href='#'>{$categorie}</a></li>";
+            <h3 class='category-title'>Catégories :</h3>
+            <ul class="category-list">
+                <?php
+                foreach ($categories as $categorie) {
+                    echo "<li><a class='a-category' href='category.php?name={$categorie['name_cat']}'>{$categorie['name_cat']}</a></li>"; // Correction de l'URL du lien
                 }
                 ?>
             </ul>
+
         </div>
+
         <div class="container-2">
             <?php
-            // Example articles array
-            $articles = [
-                [
-                    'title' => 'Article 1',
-                    'date' => '01/01/2021',
-                    'author' => 'John Doe',
-                    'image' => 'article1.jpg'
-                ],
-                [
-                    'title' => 'Article 2',
-                    'date' => '02/01/2021',
-                    'author' => 'Jane Doe',
-                    'image' => 'article2.jpg'
-                ],
-            ];
-
-            foreach ($articles as $i => $article) {
+            foreach ($articles as $article) {
                 echo "
-                <div class='article article-$i'>
+                <div class='article article-{$article['id_article']}'>
                     <div class='image-article'>
-                        <img src='./images/{$article['image']}' alt='image-article'>
+                        <img src='./images/{$article['picture_article']}' alt='image-article'>
                     </div>
                     <div class='content-article'>
-                        <h3>{$article['title']}</h3>
+                        <h3>{$article['title_article']}</h3>
                         <div class='content-article-bottom'>
-                            <p>Posté le : {$article['date']}</p>
+                            <p>Posté le : {$article['date_article']}</p>
                             <div class='content-article-author'>
-                                <p><strong>auteur : </strong> {$article['author']}</p>
+                                <p><strong>Auteur : </strong> {$article['id']}</p>
                                 <a class='a-redirection' href='#'>En savoir +</a>
                             </div>
                         </div>
@@ -87,6 +68,7 @@ $connexion = getConnexion();
                 Voir plus
             </button>
         </div>
+    </div>
 </main>
 
 <?php
