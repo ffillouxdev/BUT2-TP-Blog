@@ -17,7 +17,7 @@ updateChar();
 
 
 function updateComment(){
-    document.addEventListener('DOMContentLoaded', () => {
+    
         const voirPlusBtn = document.getElementById('voir-plus');
         const hiddenComments = document.querySelectorAll('.comment.hidden');
         let visibleCount = 0;
@@ -39,8 +39,8 @@ function updateComment(){
                     voirPlusBtn.style.display = 'none';
                 }
             });
-        } 
-    });
+        
+    }
 }
 
 updateComment()

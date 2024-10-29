@@ -1,18 +1,8 @@
 <?php 
-session_start();
-
-include("./components/header.php");
+include_once("./components/header.php");
 $connexion = getConnexion();
 if (!isset($_SESSION['sansPseudo'])) {
     $_SESSION['sansPseudo'] = false;
-}
-
-if (!isset($_SESSION['pseudo'])) {
-    $_SESSION['pseudo'] = null; 
-}
-
-if (!isset($_SESSION['isConnected'])) {
-    $_SESSION['isConnected'] = false;
 }
 
 if (!isset($_SESSION['isAdmin'])) {
@@ -27,7 +17,6 @@ if (!isset($_SESSION['isAdmin'])) {
             <input type="email" placeholder='Email' name='email'>
             <div class="show-hide-password">
                 <input type="password" placeholder='Mot de passe' name ='mdp'>
-                <span id='show-password'>👁️</span>
                 <span id='show-password'>👁️</span>
             </div>
             <button type='submit' class="form-button">Se connecter</button>
@@ -85,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
 if (!empty($_POST['pseudo'])) {
     $pseudo = $_POST['pseudo'];
     $mdp = $_SESSION['mdp'];
+    
 
     // Hachage du mot de passe avant l'insertion
     $mdp_hache = password_hash($mdp, PASSWORD_DEFAULT);
@@ -94,6 +84,7 @@ if (!empty($_POST['pseudo'])) {
         $_SESSION['pseudo'] = $pseudo;
         $_SESSION['isConnected'] = true;  
         unset($_SESSION['sansPseudo'],$_SESSION['mdp'], $_SESSION['email']);
+        $_SESSION['pseudo'] = $pseudo;
         header('Location: index.php');
         exit();
     }

@@ -54,6 +54,11 @@
         padding-right: 5vw;
     }
 
+    nav a {
+        text-decoration: none;
+        color: white;
+    }
+
     nav h1 {
         text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
     }
@@ -113,6 +118,7 @@
     .main-auth {
         height: 70vh;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
@@ -201,6 +207,7 @@
         font-size: 20px;
         color: var(--error-color);
         margin-bottom: 10vh;
+        margin-top: 10vh;
     }
 
     .main-article {
@@ -319,6 +326,7 @@
         font-weight: bold;
         margin-bottom: 10vh;
         margin-left: 39vw;
+        cursor: pointer;
     }
 
 

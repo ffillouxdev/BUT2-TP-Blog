@@ -1,11 +1,11 @@
 <?php
-include("./components/header.php");
+include_once("./components/header.php");
 include("./components/navbar.php");
 $connexion = getConnexion();
-/*if ($_SESSION['pseudo'] == null){
+if ($_SESSION['pseudo'] == null){
     header("Location: auth.php");
     exit();
-    }*/
+    }
 $requestUri = trim($_SERVER['REQUEST_URI'], '/');
 $parts = explode('/', $requestUri);
 
@@ -49,7 +49,7 @@ if (count($parts) === 1) {
     if ($article) {
         $title = $article['title_article'];
         $content = $article['content_article'];
-        $image = $_SESSION['baseUrl'];
+        $image = $article['picture_article'];
         $date = $article['date_article'];
 
         $stmt = getPseudoWithArticle($article['id_article']);
@@ -64,18 +64,18 @@ if (count($parts) === 1) {
         $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
         $name = $nameCategory['name_cat'];
 
-    $commentaires = getCommentByArticle(4);
+    $commentaires = getCommentByArticle($article['id_article']);
     $initialCount = 2;
 ?>
 <main>
     <div class='main-article'>
         <h2><?php echo $title ;?></h2>
 
-    <p class='rubrique-article'><a href="./index.php">Article</a>><?php echo "$name>$title";?></p>
+    <p class='rubrique-article'><a href="http://localhost/but2-tp-blog/index.php">Article</a>><?php echo "$name>$title";?></p>
     <div class='container-article'>
         <div class="content-article">
             <p><?php echo $content ?></p>
-            <img src="./assets/article/<?php echo $image; ?>" alt="Article Image">
+            <img src="http://localhost/but2-tp-blog/assets/article/<?php echo $image; ?>" alt="Article Image">
         </div>
         <div class='info-article'>
             <p><b>Auteur : </b><?php echo $pseudoWriter?></p>

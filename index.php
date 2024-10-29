@@ -1,10 +1,5 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['isConnected']) || $_SESSION['isConnected'] !== true) {
-    header('Location: auth');
-    exit();
-}
 
 include("./components/header.php");
 include("./components/navbar.php");

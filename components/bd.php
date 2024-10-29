@@ -17,7 +17,7 @@
 
     function getConnected($email){
         $connexion = getConnexion();
-        $sql = "SELECT id, mdp, admin FROM user WHERE email = :email";
+        $sql = "SELECT id, mdp, admin, pseudo FROM user WHERE email = :email";
         $stmt = $connexion->prepare($sql);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
@@ -148,14 +148,6 @@
         return $comment;
     }
 
-    function getCommentByArticle($id_article) {
-        $connexion = getConnexion();
-        $sql = "SELECT * FROM comment WHERE id_article = $id_article";
-        $stmt = $connexion->prepare($sql);
-        $stmt->execute();
-        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $user;
-    }
 
 
     function getArticles($pdo) {
