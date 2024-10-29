@@ -1,11 +1,12 @@
 <?php
-session_start();
 include('bd.php');
 
 $requestUri = trim($_SERVER['REQUEST_URI'], '/');
 $parts = explode('/', $requestUri);
 
-define('ROOT_URL', strtolower('/' . $parts[0] . '/' . $parts[1] . '/'));
+if (!defined('ROOT_URL')) {
+    define('ROOT_URL', strtolower('/' . $parts[0] . '/' . $parts[1] . '/'));
+}
 
 $baseDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 $baseUrl = strtolower($baseDir . '/');
@@ -20,10 +21,13 @@ if ($articleIndex !== false) {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo $baseUrl; ?>styles/style.css">
+    <script src="<?php echo $baseUrl; ?>scripts/script.js"></script>
     <title>Document</title>
 </head>
+
 <body>

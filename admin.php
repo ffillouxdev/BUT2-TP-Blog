@@ -1,59 +1,77 @@
-<?php 
-    require_once('./components/header.php'); 
-    include("./components/navbar.php");
-    
-    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-        
-        $connexion = getConnexion();
+<?php
+session_start();
 
-        if (isset($_POST['btn-modifier'])){
-            $id_cat = $_POST['id_cat']; //récupère l'id de la catégorie
-            $new_name = $_POST['name_cat'];
-            //requête sql pour modifier la catégorie
-            $sql = "UPDATE CATEGORY SET name_cat = ? WHERE id_cat = ?";
-            $stmt = $connexion->prepare($sql);
-            $stmt->execute([$new_name, $id_cat]);
+if (!isset($_SESSION['isAdmin'])) {
+    $_SESSION['isAdmin'] = false;
+}
+
+require_once('./components/header.php');
+include("./components/navbar.php");
+
+if ($_SESSION['isAdmin'] !== true) {
+    echo "Vous n'êtes pas autorisé à accéder à cette page.";
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['btn-modifier'])) {
+        $id_cat = $_POST['id_cat'];
+        $new_name = $_POST['name_cat'];
+        updateCategory($id_cat, $new_name);
+        header("Location:admin.php");
+    } elseif (isset($_POST['btn-supprimer'])) {
+        $id_cat = $_POST['id_cat'];
+        deleteCategory($id_cat);
+        header("Location:admin.php");
+    } elseif (isset($_POST['btn-creer'])) {
+        $name = $_POST['categorie'];
+        if (!empty($name)) { // Vérification côté serveur
+            insertCategory($name);
             header("Location:admin.php");
-        }
-        elseif (isset($_POST['btn-supprimer'])){
-            $id_cat = $_POST['id_cat']; //récupère l'id de la catégorie
-            //requête sql pour supprimer la catégorie
-            $sql = "DELETE FROM CATEGORY WHERE id_cat = ?";
-            $stmt = $connexion->prepare($sql);
-            $stmt->execute([$id_cat]);
-            header("Location:admin.php");
-        }
-        elseif (isset($_POST['btn-creer'])){
-            $name = $_POST['categorie']; //récupère le nom de la nouvelle catégorie
-            //requête sql pour ajouter une catégorie
-            $sql = "INSERT INTO CATEGORY (name_cat) VALUES (?)";
-            $stmt = $connexion->prepare($sql);
-            $stmt->execute([$name]);
-            header("Location:admin.php");
+        } else {
+            echo "<p style='color:red;'>Le champ catégorie ne peut pas être vide.</p>";
         }
     }
+}
 ?>
 
-
-<h2>Administration</h2>
-<p>Vous pouvez ajoutez, modifier, supprimer les catégories.</p>
-<form method="post" id="ajoutCategorie">
-    <input type="text" id="categorie" name="categorie" value="" placeholder="Catégorie">
-    <button type="submit" name="btn-creer">Créer</button>   
-</form>
-<p>Catégorie(s) acuelle(s) :</p>
+<main class="main-admin">
+    <h2>Administration</h2>
+    <p>Vous pouvez ajouter, modifier, supprimer les catégories.</p>
+    <form method="post" class="ajoutCategorie" onsubmit="return validateCategoryForm()">
+        <input type="text" class="input-category-admin" id="categorie" name="categorie" placeholder="Catégorie" required>
+        <button type="submit" class="form-button" name="btn-creer">Créer</button>
+    </form>
+    <div class="actual-categories">
+        <p>Catégorie(s) actuelle(s) :</p>
+        <?php
+        $connexion = getConnexion();
+        $categories = getCategory($connexion);
+        foreach ($categories as $row) { ?>
+            <div>
+                <form method="post" class="category-element">
+                    <input type="text" name="name_cat" class="input-form-admin" id="<?= $row['id_cat'] ?>" value="<?= htmlspecialchars($row['name_cat']) ?>" required>
+                    <input type="hidden" name="id_cat" value="<?= $row['id_cat'] ?>">
+                    <div class="category-btn">
+                        <button type="submit" name="btn-modifier">Modifier</button>
+                        <button type="submit" name="btn-supprimer">Supprimer</button>
+                    </div>
+                </form>
+            </div>
+        <?php } ?>
+    </div>
+</main>
 
 <?php
-    $connexion= getConnexion();
-    $categories = getCategory($connexion); // Récupérer la liste des catégories
-    // Parcourir chaque catégorie et créer une option pour la liste déroulante
-    foreach ($categories as $row) { ?>
-        <div>
-            <form method="post">
-                <input type="text" name="name_cat" id="<?= $row['id_cat'] ?>" value="<?= htmlspecialchars($row['name_cat']) ?>" required>
-                <input type="hidden" name="id_cat" value="<?= $row['id_cat'] ?>">
-                <button type="submit" name="btn-modifier">Modifier</button>
-                <button type="submit" name="btn-supprimer">Supprimer</button>
-            </form>
-        </div>
-    <?php } ?>
+require_once("./components/footer.php");
+?>
+<script>
+function validateCategoryForm() {
+    const categoryInput = document.getElementById('categorie');
+    if (categoryInput.value.trim() === '') {
+        alert("Le champ catégorie ne peut pas être vide.");
+        return false;
+    }
+    return true;
+}
+</script>
