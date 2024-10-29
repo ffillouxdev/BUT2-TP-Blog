@@ -1,6 +1,22 @@
 <?php
-session_start();
 include('bd.php');
+
+$requestUri = trim($_SERVER['REQUEST_URI'], '/');
+$parts = explode('/', $requestUri);
+
+if (!defined('ROOT_URL')) {
+    define('ROOT_URL', strtolower('/' . $parts[0] . '/' . $parts[1] . '/'));
+}
+
+$baseDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+$baseUrl = strtolower($baseDir . '/');
+
+$requestUri = trim($_SERVER['REQUEST_URI'], '/');
+$articleIndex = array_search('article', $parts);
+
+if ($articleIndex !== false) {
+    $parts = array_slice($parts, $articleIndex);
+}
 ?>
 
 <!DOCTYPE html>

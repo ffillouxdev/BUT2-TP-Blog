@@ -46,15 +46,20 @@ function updateComment(){
 updateComment()
 
 function showPassword() {
-    check = document.getElementById('show-password')
-    input = document.querySelector('.show-hide-password input')
-    check.addEventListener("mousedown", () => {
-        input.type = "text";
-    });
+    const check = document.getElementById('show-password');
+    const input = document.querySelector('.show-hide-password input');
+    
+    if (check && input) {
+        check.addEventListener("mousedown", () => {
+            input.type = "text";
+        });
 
-    check.addEventListener("mouseup", () => {
-        input.type = "password";
-    });
+        check.addEventListener("mouseup", () => {
+            input.type = "password";
+        });
+    } else {
+        console.error("Element(s) not found: show-password or input inside .show-hide-password");
+    }
 }
 
 showPassword();

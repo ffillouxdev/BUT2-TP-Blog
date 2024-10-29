@@ -1,30 +1,68 @@
-<?php 
-    include("./components/header.php");
-    include("./components/navbar.php");
-    $connexion = getConnexion();
-    /*if ($_SESSION['pseudo'] == null){
-        header("Location: auth.php");
-        exit();
+<?php
+include("./components/header.php");
+include("./components/navbar.php");
+$connexion = getConnexion();
+/*if ($_SESSION['pseudo'] == null){
+    header("Location: auth.php");
+    exit();
     }*/
-    $stmt = getArticle(4);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $title = $user['title_article'];
-    $content = $user['content_article'];
-    $image = $user['picture_article'];
-    $date = $user['date_article'];
+$requestUri = trim($_SERVER['REQUEST_URI'], '/');
+$parts = explode('/', $requestUri);
 
-    $stmt = getPseudoWithArticle(4);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $pseudoWriter = $user['pseudo'];
+$articleIndex = array_search('article', $parts);
 
-    $stmt = getCategoryWithArticle(4);
-    $category = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($articleIndex !== false) {
+    $parts = array_slice($parts, $articleIndex);
+}
 
-    $idCategory = $category['id_cat'];
+if (count($parts) === 1) {
+    header("Location: index.php");
+    exit();
+} elseif (count($parts) === 2) {
+    $category_slug = $parts[1];
+    $stmt = getArticlesByCategory($category_slug);
+    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+    <main class="main-specific-category-articles">
+        <h2>Articles dans la catégorie: <?php echo htmlspecialchars($category_slug); ?></h2>
+        <div class="article-list">
+            <?php foreach ($articles as $article) : ?>
+                <?php
+                $article_slug = slugify($article['title_article']);
+                ?>
+                <div class='article-filter-by-category'>
+                    <h3><?php echo htmlspecialchars($article['title_article']); ?></h3>
+                    <a class="a-redirection" href='<?php echo ($category_slug . '/' . $article_slug); ?>'>En savoir +</a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </main>
+    <?php
+} elseif (count($parts) === 3) {
+    $category_slug = $parts[1];
+    $article_slug = $parts[2];
 
-    $stmt = getCategoryWithIdCategory($idCategory);
-    $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
-    $name = $nameCategory['name_cat'];
+    // Récupérer l'article par slug
+    $stmt = getArticleBySlug($article_slug);
+    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($article) {
+        $title = $article['title_article'];
+        $content = $article['content_article'];
+        $image = $_SESSION['baseUrl'];
+        $date = $article['date_article'];
+
+        $stmt = getPseudoWithArticle($article['id_article']);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $pseudoWriter = $user['pseudo'];
+
+        $stmt = getCategoryWithArticle($article['id_article']);
+        $category = $stmt->fetch(PDO::FETCH_ASSOC);
+        $idCategory = $category['id_cat'];
+
+        $stmt = getCategoryWithIdCategory($idCategory);
+        $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
+        $name = $nameCategory['name_cat'];
 
     $commentaires = getCommentByArticle(4);
     $initialCount = 2;
@@ -98,5 +136,10 @@
     </div>
 </main>
 <?php
-    include("components/footer.php");
+    } else {
+        echo "<p>Article non trouvé.</p>";
+    }
+}
+
+include("./components/footer.php");
 ?>
