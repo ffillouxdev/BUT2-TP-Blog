@@ -17,7 +17,7 @@
 
     function getConnected($email){
         $connexion = getConnexion();
-        $sql = "SELECT id, mdp, admin FROM user WHERE email = :email";
+        $sql = "SELECT id, mdp, admin, pseudo FROM user WHERE email = :email";
         $stmt = $connexion->prepare($sql);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
@@ -116,6 +116,15 @@
         $stmt->execute([$comment,$id_article,$id, date("Y-m-d")]);
     }
 
+    function getCommentByArticle($id_article) {
+        $connexion = getConnexion();
+        $sql = "SELECT * FROM comment WHERE id_article = $id_article";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
     function getCategory($pdo) {
         $sql = 'SELECT id_cat, name_cat FROM CATEGORY';
     
@@ -139,14 +148,6 @@
         return $comment;
     }
 
-    function getCommentByArticle($id_article) {
-        $connexion = getConnexion();
-        $sql = "SELECT * FROM comment WHERE id_article = $id_article";
-        $stmt = $connexion->prepare($sql);
-        $stmt->execute();
-        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $user;
-    }
 
 
     function getArticles($pdo) {
@@ -161,7 +162,7 @@
     }
 
     function getArticleSort($pdo) {
-        $sql = 'SELECT id_article, title_article, content_article, picture_article,	id, date_article FROM ARTICLE ORDER BY title_article';	
+        $sql = 'SELECT A.id_article, A.title_article, A.content_article, A.picture_article,	A.id, A.date_article FROM ARTICLE A JOIN user U on A.id = U.id ORDER BY U.pseudo';	
     
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -173,9 +174,9 @@
 
     function getUserWhoCreateArticle($id_user){
         $connexion = getConnexion();
-        $sql = "SELECT pseudo FROM user where id = $id_user";
+        $sql = "SELECT pseudo FROM user where id = :id_user";
         $stmt = $connexion->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([':id_user' => $id_user]);
         return $stmt;
     }
     
@@ -231,5 +232,29 @@
         $sql = "DELETE FROM CATEGORY WHERE id_cat = ?";
         $stmt = $connexion->prepare($sql);
         $stmt->execute([$id_cat]);
+    }
+
+    // Fonction pour supprimer un commentaire par ID
+    function deleteComment($commentId) {
+        $connexion = getConnexion();
+        $sql = "DELETE FROM comment WHERE id_comment = :id_comment";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':id_comment' => $commentId]);
+    }
+
+    function getIdWithPseudo ($pseudo){
+        $connexion = getConnexion();
+        $sql = "SELECT id FROM user WHERE pseudo = :pseudo";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':pseudo' => $pseudo]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user['id'];
+    }
+
+    // Fonction pour supprimer un article
+    function deleteArticle($connexion, $id_article) {
+        $sql = "DELETE FROM article WHERE id_article = :id_article";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':id_article' => $id_article]);
     }
 ?>

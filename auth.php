@@ -1,18 +1,8 @@
 <?php 
-session_start();
-
-include("./components/header.php");
+include_once("./components/header.php");
 $connexion = getConnexion();
 if (!isset($_SESSION['sansPseudo'])) {
     $_SESSION['sansPseudo'] = false;
-}
-
-if (!isset($_SESSION['pseudo'])) {
-    $_SESSION['pseudo'] = null; 
-}
-
-if (!isset($_SESSION['isConnected'])) {
-    $_SESSION['isConnected'] = false;
 }
 
 if (!isset($_SESSION['isAdmin'])) {
@@ -67,24 +57,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
     }
 }
 
-// Gestion de la saisie du pseudo
-if ($_SESSION['sansPseudo'] === true) { ?>
-    <div class='auth-container'>
-        <h2>Insérer votre pseudo</h2>
-        <form method='POST'>
-            <input type='text' placeholder='Pseudo' name='pseudo' required>
-            <button type='submit'>Confirmer</button>
-        </form>
-    </div>
-    
-<?php
-    unset($_SESSION['sansPseudo']);
-}
+    if ($_SESSION['sansPseudo'] === true) { ?>
+        <div class='auth-container'>
+            <h2>Insérer votre pseudo</h2>
+            <form method='POST'>
+                <input type='text' placeholder='Pseudo' name='pseudo' required>
+                <button type='submit'>Confirmer</button>
+            </form>
+        </div>
+        
+    <?php
+        unset($_SESSION['sansPseudo']);
+    }
 
 // Si le formulaire pour le pseudo a été soumis
 if (!empty($_POST['pseudo'])) {
     $pseudo = $_POST['pseudo'];
     $mdp = $_SESSION['mdp'];
+    
 
     // Hachage du mot de passe avant l'insertion
     $mdp_hache = password_hash($mdp, PASSWORD_DEFAULT);
@@ -94,6 +84,7 @@ if (!empty($_POST['pseudo'])) {
         $_SESSION['pseudo'] = $pseudo;
         $_SESSION['isConnected'] = true;  
         unset($_SESSION['sansPseudo'],$_SESSION['mdp'], $_SESSION['email']);
+        $_SESSION['pseudo'] = $pseudo;
         header('Location: index.php');
         exit();
     }

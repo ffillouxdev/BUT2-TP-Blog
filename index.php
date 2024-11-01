@@ -1,15 +1,10 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['isConnected']) || $_SESSION['isConnected'] !== true) {
-    header('Location: auth');
-    exit();
-}
 
 include("./components/header.php");
 include("./components/navbar.php");
 $connexion = getConnexion();
 $categories = getCategory($connexion);
+$userId = getIdWithPseudo($_SESSION['pseudo']);
 
 if (empty($_SESSION['sort'])) {
     $_SESSION['sort'] = false;
@@ -29,8 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     header("Location: index.php");
 }
-?>
 
+if (isset($_GET['delete'])) {
+    $articleId = $_GET['delete'];
+    deleteArticle($connexion, $articleId);
+    header("Location: index.php"); // Redirigez vers la page principale après la suppression
+}
+?>
 
 <main class="main-index">
     <div class="index-flex-container">
@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $category_slug = slugify($category_name);
                 $article_slug = slugify($article['title_article']);
                 $baseUrl = $_SESSION['baseUrl'];
+                
                 echo "
                 <div class='article-index article-{$article['id_article']}'>
                     <div class='image-article'>
@@ -93,6 +94,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <p><strong>Auteur : </strong> {$user_creator}</p>
                             </div>
                             <a class='a-redirection' href='article/$category_slug/{$article_slug}'>En savoir +</a>
+                ";
+
+                // Vérifiez si l'utilisateur est l'auteur de l'article
+                if ($userId === $article['id']) {
+                    echo "
+                            <form method='GET' action='index.php' style='display:inline;'>
+                                <button type='submit' name='delete' value='{$article['id_article']}' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet article ?\");'>Supprimer</button>
+                            </form>
+                    ";
+                }
+
+                echo "
                         </div>
                     </div>
                 </div>

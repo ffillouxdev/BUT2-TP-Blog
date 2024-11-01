@@ -1,5 +1,6 @@
 <?php
-include('bd.php');
+include_once('bd.php');
+session_start();
 
 $requestUri = trim($_SERVER['REQUEST_URI'], '/');
 $parts = explode('/', $requestUri);
@@ -25,9 +26,9 @@ if ($articleIndex !== false) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>styles/style.css">
-    <script src="<?php echo $baseUrl; ?>scripts/script.js"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="http://localhost/but2-tp-blog/scripts/script.js" defer></script>
+    <title>Blog</title>
 </head>
 
 <body>
