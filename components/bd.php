@@ -233,4 +233,12 @@
         $stmt = $connexion->prepare($sql);
         $stmt->execute([$id_cat]);
     }
+
+    // Fonction pour supprimer un commentaire par ID
+    function deleteComment($commentId) {
+        $connexion = getConnexion();
+        $sql = "DELETE FROM comment WHERE id_comment = :id_comment";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':id_comment' => $commentId]);
+    }
 ?>

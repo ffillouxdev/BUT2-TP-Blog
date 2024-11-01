@@ -1,9 +1,11 @@
 <?php
+ob_start();
 include_once("./components/header.php");
 include("./components/navbar.php");
+
 $connexion = getConnexion();
 
-if ($_SESSION['pseudo'] == null){
+if (empty($_SESSION['pseudo'])) {
     header("Location: auth.php");
     exit();
 }
@@ -24,26 +26,23 @@ if (count($parts) === 1) {
     $stmt = getArticlesByCategory($category_slug);
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-    <main class="main-specific-category-articles">
-        <h2>Articles dans la catégorie: <?php echo htmlspecialchars($category_slug); ?></h2>
-        <div class="article-list">
-            <?php foreach ($articles as $article) : ?>
-                <?php
-                $article_slug = slugify($article['title_article']);
-                ?>
-                <div class='article-filter-by-category'>
-                    <h3><?php echo htmlspecialchars($article['title_article']); ?></h3>
-                    <a class="a-redirection" href='<?php echo ($category_slug . '/' . $article_slug); ?>'>En savoir +</a>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </main>
-    <?php
+<main class="main-specific-category-articles">
+    <h2>Articles dans la catégorie: <?php echo htmlspecialchars($category_slug); ?></h2>
+    <div class="article-list">
+        <?php foreach ($articles as $article) : ?>
+            <?php $article_slug = slugify($article['title_article']); ?>
+            <div class='article-filter-by-category'>
+                <h3><?php echo htmlspecialchars($article['title_article']); ?></h3>
+                <a class="a-redirection" href='<?php echo ($category_slug . '/' . $article_slug); ?>'>En savoir +</a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</main>
+<?php
 } elseif (count($parts) === 3) {
     $category_slug = $parts[1];
     $article_slug = $parts[2];
 
-    // Récupérer l'article par slug
     $stmt = getArticleBySlug($article_slug);
     $article = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -67,6 +66,7 @@ if (count($parts) === 1) {
 
         $commentaires = getCommentByArticle($article['id_article']);
         $initialCount = 2;
+
 ?>
 <main>
     <div class='main-article'>
@@ -85,11 +85,10 @@ if (count($parts) === 1) {
         </div>
     
     <?php
-        $userPseudo = $_SESSION['pseudo']; // Récupération du pseudo de l'utilisateur connecté
+        $userPseudo = $_SESSION['pseudo'];
         $userComments = [];
         $otherComments = [];
 
-        // Séparer les commentaires de l'utilisateur des autres commentaires
         foreach ($commentaires as $commentaire) {
             $stmt = getPseudoWithIdComment($commentaire['id_comment']);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -102,7 +101,6 @@ if (count($parts) === 1) {
             }
         }
 
-        // Combiner les commentaires de l'utilisateur et les autres
         $allComments = array_merge($userComments, $otherComments);
         $rowCount = count($allComments);
 
@@ -110,13 +108,12 @@ if (count($parts) === 1) {
             echo "<p class='rubrique-article'>Toutes les réponses :</p>";
             for ($i = 0; $i < $rowCount; $i++) {
                 $contenuCommentaire = $allComments[$i]['content_comment'];
-                $auteurCommentaire = $allComments[$i]['id_comment'];
+                $idCommentaire = $allComments[$i]['id_comment'];
                 $dateCommentaire = $allComments[$i]['date_comment'];
-                $stmt = getPseudoWithIdComment($auteurCommentaire);
+                $stmt = getPseudoWithIdComment($idCommentaire);
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 $pseudoCommentaire = $user['pseudo'];
                 
-                // Ajout d'une classe et d'un style pour les commentaires cachés
                 $isHidden = $i >= $initialCount ? 'hidden' : '';
                 ?>
                 <div class='comment <?php echo $isHidden; ?>'>
@@ -125,10 +122,19 @@ if (count($parts) === 1) {
                         <p><b>Auteur : </b><?php echo htmlspecialchars($pseudoCommentaire); ?></p>
                         <p><b>Publié le :</b><?php echo htmlspecialchars($dateCommentaire); ?></p>
                     </div>
+                    <?php
+                    if ($pseudoCommentaire === $userPseudo) {
+                        ?>
+                        <form method="POST" class="delete-comment-form">
+                            <input type="hidden" name="comment_id" value="<?php echo $idCommentaire; ?>">
+                            <button type="submit" name="delete_comment" class="delete-button">Supprimer</button>
+                        </form>
+                        <?php
+                    }
+                    ?>
                 </div>
                 <?php
             }
-            // Bouton "Voir plus"
             if ($rowCount > $initialCount) {
                 echo "<button id='voir-plus'>Voir plus</button>";
             }
@@ -145,8 +151,15 @@ if (count($parts) === 1) {
             </form>
         </div>
         <?php 
-            if(!empty($_POST['comment'])){
+            if (!empty($_POST['comment'])) {
                 insertComment($userPseudo, $_POST['comment'], $article['id_article']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
+            
+            if (isset($_POST['delete_comment'])) {
+                $commentId = $_POST['comment_id'];
+                deleteComment($commentId);
                 header("Location: " . $_SERVER['REQUEST_URI']);
                 exit();
             }
