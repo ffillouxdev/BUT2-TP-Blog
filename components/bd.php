@@ -162,7 +162,7 @@
     }
 
     function getArticleSort($pdo) {
-        $sql = 'SELECT id_article, title_article, content_article, picture_article,	id, date_article FROM ARTICLE ORDER BY title_article';	
+        $sql = 'SELECT A.id_article, A.title_article, A.content_article, A.picture_article,	A.id, A.date_article FROM ARTICLE A JOIN user U on A.id = U.id ORDER BY U.pseudo';	
     
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
