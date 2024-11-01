@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $chem_temp_image = $_FILES['imageArticle']['tmp_name']; 
         $destination = './assets/article/' . $picture_article; 
         move_uploaded_file($chem_temp_image, $destination); 
-        $id_user = $_SESSION['id'];
+        $id_user = getIdWithPseudo($_SESSION['pseudo']);
         $date = date("Y-m-d"); 
         $id_categorys = $_POST['categoryArticle']; 
 

@@ -174,9 +174,9 @@
 
     function getUserWhoCreateArticle($id_user){
         $connexion = getConnexion();
-        $sql = "SELECT pseudo FROM user where id = $id_user";
+        $sql = "SELECT pseudo FROM user where id = :id_user";
         $stmt = $connexion->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([':id_user' => $id_user]);
         return $stmt;
     }
     
@@ -240,5 +240,21 @@
         $sql = "DELETE FROM comment WHERE id_comment = :id_comment";
         $stmt = $connexion->prepare($sql);
         $stmt->execute([':id_comment' => $commentId]);
+    }
+
+    function getIdWithPseudo ($pseudo){
+        $connexion = getConnexion();
+        $sql = "SELECT id FROM user WHERE pseudo = :pseudo";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':pseudo' => $pseudo]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user['id'];
+    }
+
+    // Fonction pour supprimer un article
+    function deleteArticle($connexion, $id_article) {
+        $sql = "DELETE FROM article WHERE id_article = :id_article";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute([':id_article' => $id_article]);
     }
 ?>

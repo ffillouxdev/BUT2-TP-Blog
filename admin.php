@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if (!isset($_SESSION['isAdmin'])) {
     $_SESSION['isAdmin'] = false;
@@ -9,7 +8,7 @@ require_once('./components/header.php');
 include("./components/navbar.php");
 
 if ($_SESSION['isAdmin'] !== true) {
-    echo "Vous n'êtes pas autorisé à accéder à cette page.";
+    echo "<p class='error'>Vous n'êtes pas autorisé à accéder à cette page.</p>";
     exit();
 }
 
