@@ -72,11 +72,11 @@ if (count($parts) === 1) {
     <div class='main-article'>
         <h2><?php echo $title ;?></h2>
 
-        <p class='rubrique-article'><a href="http://localhost/but2-tp-blog/index.php">Article</a>><?php echo "$name>$title";?></p>
+        <p class='rubrique-article'><a href="http://localhost/but2-tp-blog/code/index.php">Article</a>><?php echo "$name>$title";?></p>
         <div class='container-article'>
             <div class="content-article">
                 <p><?php echo $content ?></p>
-                <img src="http://localhost/but2-tp-blog/assets/article/<?php echo $image; ?>" alt="Article Image">
+                <img src="http://localhost/but2-tp-blog/code/assets/article/<?php echo $image; ?>" alt="Article Image">
             </div>
             <div class='info-article'>
                 <p><b>Auteur : </b><?php echo $pseudoWriter?></p>
@@ -163,14 +163,15 @@ if (count($parts) === 1) {
                 header("Location: " . $_SERVER['REQUEST_URI']);
                 exit();
             }
-        ?>
+        } else {
+            echo "<p class ='error'>Article non trouvé.</p>";
+        }
+    }
+    ?>
     </div>
 </main>
 <?php
-    } else {
-        echo "<p>Article non trouvé.</p>";
-    }
-}
+    
 
 include("./components/footer.php");
 ?>

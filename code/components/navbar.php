@@ -13,7 +13,7 @@ $_SESSION['baseUrl'] = 'http://localhost' . $baseUrl;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'disconnect') {
     session_destroy();
-    header('Location: ' . ROOT_URL . 'auth');
+    header('Location: ' . ROOT_URL . 'code/auth');
     exit();
 }
 
@@ -38,6 +38,6 @@ if (empty($_SESSION['pseudo'])) {
             <input type="hidden" name="action" value="disconnect">
             <button class="disconnect-btn">Se déconnecter</button>
         </form>
-        <a href="http://localhost/but2-tp-blog/index.php"><h1>BUT2-TP-Blog</h1></a>
+        <a href="http://localhost/but2-tp-blog/code/index.php"><h1>BUT2-TP-Blog</h1></a>
     </nav>
 </header>

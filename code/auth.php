@@ -27,7 +27,7 @@ if (!isset($_SESSION['isAdmin'])) {
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['mdp'])) {
     $_SESSION['email'] = $_POST['email'];
-    $_SESSION['mdp'] = $_POST['mdp'];
+    $_SESSION['mdp'] = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
 
     $stmt = getConnected($_SESSION['email']);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -38,12 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
             header('Location: ' . $_SERVER['PHP_SELF']); 
             exit();
         } else {
-            if (password_verify($_SESSION['mdp'], $user['mdp'])){        
+            if (password_verify($_POST['mdp'], $user['mdp'])){        
                 $_SESSION['pseudo'] = $user['pseudo'];
-                $_SESSION['isConnected'] = true; 
                 $_SESSION['isAdmin'] = $user['admin'] == 1 ? true : false;
-                
-                
                 header('Location: index.php');
                 exit();
             } else { ?>
@@ -57,17 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
     }
 }
 
-    if ($_SESSION['sansPseudo'] === true) { ?>
-        <div class='auth-container'>
-            <h2>Insérer votre pseudo</h2>
-            <form method='POST'>
-                <input type='text' placeholder='Pseudo' name='pseudo' required>
-                <button type='submit'>Confirmer</button>
-            </form>
-        </div>
+if ($_SESSION['sansPseudo'] === true) { ?>
+    <div class='auth-container'>
+        <h2>Insérer votre pseudo</h2>
+        <form method='POST'>
+            <input type='text' placeholder='Pseudo' name='pseudo' required>
+            <button type='submit'>Confirmer</button>
+        </form>
+    </div>
         
-    <?php
-        unset($_SESSION['sansPseudo']);
+<?php
+            unset($_SESSION['sansPseudo']);
     }
 
 // Si le formulaire pour le pseudo a été soumis
@@ -75,12 +72,8 @@ if (!empty($_POST['pseudo'])) {
     $pseudo = $_POST['pseudo'];
     $mdp = $_SESSION['mdp'];
     
-
-    // Hachage du mot de passe avant l'insertion
-    $mdp_hache = password_hash($mdp, PASSWORD_DEFAULT);
-    
     if (verifyPseudo($pseudo)){
-        insertUser($_SESSION['email'], $mdp_hache, $pseudo);
+        insertUser($_SESSION['email'], $mdp, $pseudo);
         $_SESSION['pseudo'] = $pseudo;
         $_SESSION['isConnected'] = true;  
         unset($_SESSION['sansPseudo'],$_SESSION['mdp'], $_SESSION['email']);
