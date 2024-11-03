@@ -24,7 +24,7 @@ if (count($parts) === 1) {
 } elseif (count($parts) === 2) {
     $category_slug = $parts[1];
     $stmt = getArticlesByCategory($category_slug);
-    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $articles = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
 ?>
 <main class="main-specific-category-articles">
     <h2>Articles dans la catégorie: <?php echo htmlspecialchars($category_slug); ?></h2>
@@ -44,7 +44,7 @@ if (count($parts) === 1) {
     $article_slug = $parts[2];
 
     $stmt = getArticleBySlug($article_slug);
-    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+    $article = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
 
     if ($article) {
         $title = $article['title_article'];
@@ -53,16 +53,16 @@ if (count($parts) === 1) {
         $date = $article['date_article'];
 
         $stmt = getPseudoWithArticle($article['id_article']);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        $pseudoWriter = $user['pseudo'];
+        $user = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+        $pseudoWriter = $user ? $user['pseudo'] : 'Inconnu';
 
         $stmt = getCategoryWithArticle($article['id_article']);
-        $category = $stmt->fetch(PDO::FETCH_ASSOC);
-        $idCategory = $category['id_cat'];
+        $category = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+        $idCategory = $category ? $category['id_cat'] : null;
 
         $stmt = getCategoryWithIdCategory($idCategory);
-        $nameCategory = $stmt->fetch(PDO::FETCH_ASSOC);
-        $name = $nameCategory['name_cat'];
+        $nameCategory = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+        $name = $nameCategory ? $nameCategory['name_cat'] : 'Catégorie non définie';
 
         $commentaires = getCommentByArticle($article['id_article']);
         $initialCount = 2;
@@ -72,11 +72,11 @@ if (count($parts) === 1) {
     <div class='main-article'>
         <h2><?php echo $title ;?></h2>
 
-        <p class='rubrique-article'><a href="http://localhost/but2-tp-blog/index.php">Article</a>><?php echo "$name>$title";?></p>
+        <p class='rubrique-article'><a href="http://localhost/but2-tp-blog/code/index.php">Article</a>><?php echo "$name>$title";?></p>
         <div class='container-article'>
             <div class="content-article">
                 <p><?php echo $content ?></p>
-                <img src="http://localhost/but2-tp-blog/assets/article/<?php echo $image; ?>" alt="Article Image">
+                <img src="http://localhost/but2-tp-blog/code/assets/article/<?php echo $image; ?>" alt="Article Image">
             </div>
             <div class='info-article'>
                 <p><b>Auteur : </b><?php echo $pseudoWriter?></p>
@@ -91,8 +91,8 @@ if (count($parts) === 1) {
 
         foreach ($commentaires as $commentaire) {
             $stmt = getPseudoWithIdComment($commentaire['id_comment']);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            $pseudoCommentaire = $user['pseudo'];
+            $user = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+            $pseudoCommentaire = $user ? $user['pseudo'] : 'Anonyme';
 
             if ($pseudoCommentaire === $userPseudo) {
                 $userComments[] = $commentaire;
@@ -111,8 +111,8 @@ if (count($parts) === 1) {
                 $idCommentaire = $allComments[$i]['id_comment'];
                 $dateCommentaire = $allComments[$i]['date_comment'];
                 $stmt = getPseudoWithIdComment($idCommentaire);
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                $pseudoCommentaire = $user['pseudo'];
+                $user = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+                $pseudoCommentaire = $user ? $user['pseudo'] : 'Anonyme';
                 
                 $isHidden = $i >= $initialCount ? 'hidden' : '';
                 ?>
@@ -163,14 +163,13 @@ if (count($parts) === 1) {
                 header("Location: " . $_SERVER['REQUEST_URI']);
                 exit();
             }
-        ?>
+        } else {
+            echo "<p class ='error'>Article non trouvé.</p>";
+        }
+    }
+    ?>
     </div>
 </main>
 <?php
-    } else {
-        echo "<p>Article non trouvé.</p>";
-    }
-}
-
 include("./components/footer.php");
 ?>

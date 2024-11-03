@@ -18,26 +18,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 }
 
 if (empty($_SESSION['pseudo'])) {
-    header("Location: http://localhost/but2-tp-blog/auth.php");
+    header("Location: http://localhost/but2-tp-blog/code/auth.php");
     exit();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>styles/style.css">
-    <title>BUT2-TP-Blog</title>
-</head>
-<body>
+
 <header>
     <nav>
         <form action="" method="POST">
             <input type="hidden" name="action" value="disconnect">
             <button class="disconnect-btn">Se déconnecter</button>
         </form>
-        <a href="http://localhost/but2-tp-blog/index.php"><h1>BUT2-TP-Blog</h1></a>
+        <a href="http://localhost/but2-tp-blog/code/index.php"><h1>BUT2-TP-Blog</h1></a>
     </nav>
 </header>

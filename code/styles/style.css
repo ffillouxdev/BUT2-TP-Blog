@@ -297,6 +297,8 @@
 
     .post-comment {
         margin-bottom: 10vh;
+        width: 40vw;
+        margin-left: 30vw;
     }
 
     .post-comment>p {
@@ -316,6 +318,10 @@
         border-radius: 5px;
         font-weight: bold;
         cursor: pointer;
+    }
+
+    #caractere {
+        text-align: right;
     }
 
     #voir-plus {

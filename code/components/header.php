@@ -26,8 +26,8 @@ if ($articleIndex !== false) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/style.css">
-    <script src="http://localhost/but2-tp-blog/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="http://localhost/but2-tp-blog/code//styles/style.css">
+    <script src="http://localhost/but2-tp-blog/code/scripts/script.js" defer></script>
     <title>Blog</title>
 </head>
 

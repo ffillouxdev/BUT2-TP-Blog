@@ -74,7 +74,7 @@
 
     function getPseudoWithArticle($id_article){
         $connexion = getConnexion();
-        $sql = "SELECT U.pseudo FROM user U join article A on U.id = A.id where id_article = 4";
+        $sql = "SELECT U.pseudo FROM user U join article A on U.id = A.id where id_article = $id_article";
         $stmt = $connexion->prepare($sql);
         $stmt->execute();
         return $stmt;

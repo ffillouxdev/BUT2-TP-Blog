@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 18 oct. 2024 à 08:31
+-- Généré le : dim. 03 nov. 2024 à 14:50
 -- Version du serveur : 8.0.28
 -- Version de PHP : 8.2.18
 
@@ -30,21 +30,22 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE IF NOT EXISTS `article` (
   `id_article` int NOT NULL AUTO_INCREMENT,
-  `title_article` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
-  `content_article` varchar(2000) COLLATE utf8mb4_general_ci NOT NULL,
+  `title_article` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `content_article` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `picture_article` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   `id` int DEFAULT NULL,
   `date_article` date DEFAULT NULL,
   PRIMARY KEY (`id_article`),
   KEY `foreign` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `article`
 --
 
 INSERT INTO `article` (`id_article`, `title_article`, `content_article`, `picture_article`, `id`, `date_article`) VALUES
-(4, 'La retraite d\'une légende', 'Rafael Nadal, légende du tennis et détenteur de 22 titres du Grand Chelem, a annoncé sa retraite après près de deux décennies de carrière exceptionnelle. Connu pour sa combativité inébranlable et son esprit de guerrier, Nadal a marqué l\'histoire du tennis avec ses victoires emblématiques, notamment ses 14 titres à Roland-Garros, où il est devenu une véritable icône. À 38 ans, il laisse derrière lui un héritage inégalé, une popularité immense et le respect de millions de fans à travers le monde. Sa retraite marque la fin d\'une ère pour le tennis, mais son impact sur le sport et son style unique continueront d\'inspirer les générations futures. Merci, Rafa, pour ces moments mémorables et pour avoir élevé le tennis à de nouveaux sommets !\r\n\r\n', 'nadal.webp', 21, '2024-10-15');
+(9, 'Les bienfaits du sport en pleine nature : un boost pour le corps et l\'esprit', '\r\nLe sport en pleine nature offre de nombreux bienfaits pour le corps et l\'esprit. Pratiquer une activité physique en extérieur, que ce soit la course à pied, le vélo, la randonnée ou le yoga, permet de se connecter à la nature et de respirer de l’air frais. Les paysages variés stimulent nos sens et apportent un sentiment de liberté et de tranquillité, réduisant le stress et l’anxiété.\r\n\r\nSur le plan physique, le terrain naturel renforce notre équilibre et sollicite davantage nos muscles que les surfaces artificielles. La lumière naturelle stimule la production de vitamine D, essentielle pour nos os et notre système immunitaire. De plus, l’effort en plein air améliore l’endurance, la force et la souplesse.', 'sport-nature-drome-960x640.jpeg', 21, '2024-11-03'),
+(10, 'L\'Émerveillement de l\'Espace : Une Invitation à l\'Exploration', 'L’espace, vaste et mystérieux, fascine l’humanité depuis des millénaires. Observer les étoiles, imaginer des galaxies lointaines et des mondes inconnus réveille notre curiosité et notre désir d’exploration. Grâce aux avancées technologiques, nous avons envoyé des sondes, des robots et même des astronautes pour explorer des lieux comme la Lune, Mars et les confins de notre système solaire.\r\n\r\nCes explorations ont permis des découvertes incroyables, révélant des paysages inattendus et des phénomènes cosmiques fascinants. L’espace est aussi un rappel de la fragilité de notre planète, incitant à réfléchir sur notre place dans l’univers. En contemplant les étoiles, nous redécouvrons le pouvoir de rêver, de nous poser des questions et de poursuivre cette quête infinie de connaissances.', 'espace.jpg', 22, '2024-11-03');
 
 -- --------------------------------------------------------
 
@@ -65,8 +66,9 @@ CREATE TABLE IF NOT EXISTS `article_category_link` (
 --
 
 INSERT INTO `article_category_link` (`id_article`, `id_cat`) VALUES
-(4, 1),
-(4, 1);
+(9, 1),
+(9, 3),
+(10, 2);
 
 -- --------------------------------------------------------
 
@@ -79,14 +81,16 @@ CREATE TABLE IF NOT EXISTS `category` (
   `id_cat` int NOT NULL AUTO_INCREMENT,
   `name_cat` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id_cat`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `category`
 --
 
 INSERT INTO `category` (`id_cat`, `name_cat`) VALUES
-(1, 'Sport');
+(1, 'Sport'),
+(2, 'Espace'),
+(3, 'Nature');
 
 -- --------------------------------------------------------
 
@@ -97,22 +101,21 @@ INSERT INTO `category` (`id_cat`, `name_cat`) VALUES
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id_comment` int NOT NULL AUTO_INCREMENT,
-  `content_comment` varchar(2000) COLLATE utf8mb4_general_ci NOT NULL,
+  `content_comment` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `id_article` int DEFAULT NULL,
   `id` int DEFAULT NULL,
   `date_comment` date NOT NULL,
   PRIMARY KEY (`id_comment`),
   KEY `foreign` (`id_article`),
   KEY `foreign2` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `comment`
 --
 
 INSERT INTO `comment` (`id_comment`, `content_comment`, `id_article`, `id`, `date_comment`) VALUES
-(1, 'J\'adore ce joueur !', 4, 21, '2024-10-15'),
-(3, 'Super !', 4, 23, '2024-10-16');
+(34, 'Super article ! ', 9, 22, '2024-11-03');
 
 -- --------------------------------------------------------
 
@@ -128,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `pseudo` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `admin` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `user`
@@ -136,9 +139,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `email`, `mdp`, `pseudo`, `admin`) VALUES
 (21, 'test@test.fr', '$2y$10$SntMjVppq/F2.INAM6r02OVfpQWUrcTB1J3VCLGMD1jbTDNThx9h2', 'test', 0),
-(22, 'admin@localhost.fr', '$2y$10$zs6JPPfFoEs..Ir6yKuh7OWCj6smfb.L2n5KuWActjq1V37IKXAYS', 'admin', 0),
-(23, 'sacha.roux38@gmail.com', '$2y$10$zMoYW7gDxsQqgnJe7KzQvuMxFku4mgp7.qkADCj1.pwp9G.XUfZ6S', 'sacha', 0),
-(27, 'dezded@ded.de', '$2y$10$CkiWdi/3C/bgmVncC4Cak..eSfXGUm6yvzdISbb3v0l4r8aGl47Y6', 'frfrf', 0);
+(22, 'admin@localhost.fr', '$2y$10$zs6JPPfFoEs..Ir6yKuh7OWCj6smfb.L2n5KuWActjq1V37IKXAYS', 'admin', 1);
 
 --
 -- Contraintes pour les tables déchargées
