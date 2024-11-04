@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (isset($_GET['delete'])) {
     $articleId = $_GET['delete'];
     deleteArticle($connexion, $articleId);
-    header("Location: index.php"); // Redirigez vers la page principale après la suppression
+    header("Location: index.php"); 
 }
 ?>
 

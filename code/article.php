@@ -39,7 +39,7 @@ if (count($parts) === 1) {
     </div>
 </main>
 <?php
-} elseif (count($parts) === 3) {
+} elseif (count($parts) === 3) {    
     $category_slug = $parts[1];
     $article_slug = $parts[2];
 
